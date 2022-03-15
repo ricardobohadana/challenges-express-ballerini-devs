@@ -14,7 +14,7 @@ datasource db {
 
 model Dev {
   id        String      @id     @default(cuid())
-  Nome      String
+  Nome      String      
   Avatar    String
   Carreira  String
   Github    String

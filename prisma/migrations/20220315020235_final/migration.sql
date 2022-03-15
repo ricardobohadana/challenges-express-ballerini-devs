@@ -9,6 +9,3 @@ CREATE TABLE "Dev" (
 
     CONSTRAINT "Dev_pkey" PRIMARY KEY ("id")
 );
-
--- CreateIndex
-CREATE UNIQUE INDEX "Dev_id_key" ON "Dev"("id");

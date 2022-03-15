@@ -1,10 +1,10 @@
-import { prisma } from "../server";
+import { prisma } from "../app";
 import { Request, Response } from "express";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { Prisma } from "@prisma/client";
 import Dev from "../Interfaces/Dev";
 
-class DevController {
+class devController {
   static properties = ["Nome", "Avatar", "Carreira", "Github", "Linkedin"];
 
   private static handleDbErrors(err: any, response: Response) {
@@ -51,16 +51,16 @@ class DevController {
 
   // GET METHOD
   static async get(request: Request, response: Response) {
+    // console.log(prisma);
+    // const dev = await prisma.dev.count();
+    // return response.json({ data: dev });
     const devs = await prisma.dev.findMany();
-    return response
-      .status(StatusCodes.ACCEPTED)
-      .json(devs)
-      .send(ReasonPhrases.ACCEPTED);
+    return response.status(StatusCodes.ACCEPTED).json({ devs: devs });
   }
 
   // UPDATE METHOD
   static async put(request: Request, response: Response) {
-    const { devId, Nome, Avatar, Carreira, Github, Linkedin } = request.body;
+    const { id, Nome, Avatar, Carreira, Github, Linkedin } = request.body;
     const payload = {
       Nome: Nome,
       Avatar: Avatar,
@@ -68,7 +68,7 @@ class DevController {
       Github: Github,
       Linkedin: Linkedin,
     };
-    if (!devId)
+    if (!id)
       return response
         .status(StatusCodes.NOT_FOUND)
         .send(ReasonPhrases.NOT_FOUND);
@@ -81,7 +81,7 @@ class DevController {
     try {
       await prisma.dev.update({
         where: {
-          id: devId,
+          id: id,
         },
         data: {
           Nome: payload.Nome,
@@ -99,9 +99,9 @@ class DevController {
 
   //DELETE METHOD
   static async delete(request: Request, response: Response) {
-    const { devId } = request.body;
+    const { id } = request.body;
 
-    if (!devId)
+    if (!id)
       return response
         .status(StatusCodes.NOT_FOUND)
         .send(ReasonPhrases.NOT_FOUND);
@@ -109,7 +109,7 @@ class DevController {
     try {
       await prisma.dev.delete({
         where: {
-          id: devId,
+          id: id,
         },
       });
 
@@ -120,4 +120,4 @@ class DevController {
   }
 }
 
-export default DevController;
+export default devController;

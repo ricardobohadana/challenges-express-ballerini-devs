@@ -1,17 +1,17 @@
 import { Request, Response, Router } from "express";
-import DevController from "../Controllers/devController";
+import devController from "../Controllers/devController";
 
 const devRouter = Router();
 
 devRouter
   .route("/dev")
   // Create
-  .post(DevController.post)
+  .post((request, response) => devController.post(request, response))
   // Read
-  .get(DevController.get)
+  .get((request, response) => devController.get(request, response))
   // Update
-  .put(DevController.put)
+  .put((request, response) => devController.put(request, response))
   // Delete
-  .delete(DevController.delete);
+  .delete((request, response) => devController.delete(request, response));
 
 export default devRouter;

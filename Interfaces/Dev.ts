@@ -1,9 +1,9 @@
-interface Dev {
-  [Nome: string]: string;
-  [Avatar: string]: string;
-  [Carreira: string]: string;
-  [Github: string]: string;
-  [Linkedin: string]: string;
+interface Dev extends Record<string, string> {
+  Nome: string;
+  Avatar: string;
+  Carreira: string;
+  Github: string;
+  Linkedin: string;
 }
 
 export default Dev;

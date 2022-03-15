@@ -1,6 +1,6 @@
 import { prisma } from "../app";
 import { Request, Response } from "express";
-import { ReasonPhrases, StatusCodes } from "http-status-codes";
+import { StatusCodes } from "http-status-codes";
 import { Prisma } from "@prisma/client";
 import Dev from "../Interfaces/Dev";
 
@@ -45,9 +45,6 @@ class devController {
 
   // GET METHOD
   static async get(request: Request, response: Response) {
-    // console.log(prisma);
-    // const dev = await prisma.dev.count();
-    // return response.json({ data: dev });
     const devs = await prisma.dev.findMany();
     return response.status(StatusCodes.ACCEPTED).json({ devs: devs });
   }
@@ -55,7 +52,7 @@ class devController {
   // UPDATE METHOD
   static async put(request: Request, response: Response) {
     const { id, Nome, Avatar, Carreira, Github, Linkedin } = request.body;
-    var payload: Record<string, string> = {
+    var payload: Dev = {
       Nome: Nome,
       Avatar: Avatar,
       Carreira: Carreira,
@@ -68,11 +65,8 @@ class devController {
     );
 
     if (!Object.keys(payload).length)
-      return response.sendStatus(StatusCodes.NOT_ACCEPTABLE);
-    if (!id) return response.sendStatus(StatusCodes.NOT_ACCEPTABLE);
-
-    if (!this.checkAttributes(payload).every((boolKey) => boolKey))
       return response.sendStatus(StatusCodes.BAD_REQUEST);
+    if (!id) return response.sendStatus(StatusCodes.NOT_ACCEPTABLE);
 
     try {
       await prisma.dev.update({

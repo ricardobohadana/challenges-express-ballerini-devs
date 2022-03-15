@@ -1,9 +1,9 @@
 interface Dev {
-  Nome: string;
-  Avatar: string;
-  Carreira: string;
-  Github: string;
-  Linkedin: string;
+  [Nome: string]: string;
+  [Avatar: string]: string;
+  [Carreira: string]: string;
+  [Github: string]: string;
+  [Linkedin: string]: string;
 }
 
 export default Dev;

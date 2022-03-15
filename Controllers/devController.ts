@@ -10,7 +10,7 @@ class devController {
   private static handleDbErrors(err: any, response: Response) {
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
       if (err.code === "P2001") {
-        return response.sendStatus(StatusCodes.NOT_FOUND);
+        return response.sendStatus(StatusCodes.NOT_ACCEPTABLE);
       } else {
         return response.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
       }
@@ -55,14 +55,21 @@ class devController {
   // UPDATE METHOD
   static async put(request: Request, response: Response) {
     const { id, Nome, Avatar, Carreira, Github, Linkedin } = request.body;
-    const payload = {
+    var payload: Record<string, string> = {
       Nome: Nome,
       Avatar: Avatar,
       Carreira: Carreira,
       Github: Github,
       Linkedin: Linkedin,
     };
-    if (!id) return response.sendStatus(StatusCodes.NOT_FOUND);
+
+    Object.keys(payload).forEach(
+      (key) => payload[key] === undefined && delete payload[key]
+    );
+
+    if (!Object.keys(payload).length)
+      return response.sendStatus(StatusCodes.NOT_ACCEPTABLE);
+    if (!id) return response.sendStatus(StatusCodes.NOT_ACCEPTABLE);
 
     if (!this.checkAttributes(payload).every((boolKey) => boolKey))
       return response.sendStatus(StatusCodes.BAD_REQUEST);
@@ -72,13 +79,7 @@ class devController {
         where: {
           id: id,
         },
-        data: {
-          Nome: payload.Nome,
-          Avatar: payload.Avatar,
-          Carreira: payload.Carreira,
-          Github: payload.Github,
-          Linkedin: payload.Linkedin,
-        },
+        data: { ...payload },
       });
       return response.sendStatus(StatusCodes.CREATED);
     } catch (err) {

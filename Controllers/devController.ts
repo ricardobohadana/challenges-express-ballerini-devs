@@ -10,13 +10,9 @@ class devController {
   private static handleDbErrors(err: any, response: Response) {
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
       if (err.code === "P2001") {
-        return response
-          .status(StatusCodes.NOT_FOUND)
-          .send(ReasonPhrases.NOT_FOUND);
+        return response.sendStatus(StatusCodes.NOT_FOUND);
       } else {
-        return response
-          .status(StatusCodes.INTERNAL_SERVER_ERROR)
-          .send(ReasonPhrases.INTERNAL_SERVER_ERROR);
+        return response.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
       }
     }
   }
@@ -38,15 +34,13 @@ class devController {
     const payload = request.body;
 
     if (!this.checkAttributes(payload).every((boolKey) => boolKey))
-      return response
-        .status(StatusCodes.BAD_REQUEST)
-        .send(ReasonPhrases.BAD_REQUEST);
+      return response.sendStatus(StatusCodes.BAD_REQUEST);
 
     const dev = payload;
 
     await prisma.dev.create({ data: dev });
 
-    return response.status(StatusCodes.CREATED).send(ReasonPhrases.CREATED);
+    return response.sendStatus(StatusCodes.CREATED);
   }
 
   // GET METHOD
@@ -68,15 +62,10 @@ class devController {
       Github: Github,
       Linkedin: Linkedin,
     };
-    if (!id)
-      return response
-        .status(StatusCodes.NOT_FOUND)
-        .send(ReasonPhrases.NOT_FOUND);
+    if (!id) return response.sendStatus(StatusCodes.NOT_FOUND);
 
     if (!this.checkAttributes(payload).every((boolKey) => boolKey))
-      return response
-        .status(StatusCodes.BAD_REQUEST)
-        .send(ReasonPhrases.BAD_REQUEST);
+      return response.sendStatus(StatusCodes.BAD_REQUEST);
 
     try {
       await prisma.dev.update({
@@ -91,7 +80,7 @@ class devController {
           Linkedin: payload.Linkedin,
         },
       });
-      return response.status(StatusCodes.CREATED).send(ReasonPhrases.CREATED);
+      return response.sendStatus(StatusCodes.CREATED);
     } catch (err) {
       return this.handleDbErrors(err, response);
     }
@@ -101,10 +90,7 @@ class devController {
   static async delete(request: Request, response: Response) {
     const { id } = request.body;
 
-    if (!id)
-      return response
-        .status(StatusCodes.NOT_FOUND)
-        .send(ReasonPhrases.NOT_FOUND);
+    if (!id) return response.sendStatus(StatusCodes.NOT_FOUND);
 
     try {
       await prisma.dev.delete({
@@ -113,7 +99,7 @@ class devController {
         },
       });
 
-      return response.status(StatusCodes.ACCEPTED).send(ReasonPhrases.ACCEPTED);
+      return response.sendStatus(StatusCodes.ACCEPTED);
     } catch (err) {
       return this.handleDbErrors(err, response);
     }

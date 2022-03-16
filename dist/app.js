@@ -33,7 +33,7 @@ const express_1 = __importStar(require("express"));
 const process_1 = require("process");
 const logEvents_1 = __importDefault(require("./Middlewares/logEvents"));
 const devRouter_1 = __importDefault(require("./Routers/devRouter"));
-const allowedDomains = ["http://localhost:3000", undefined];
+const allowedDomains = ["https://www.challenges-express-devs.heroku.com"];
 const app = (0, express_1.default)();
 exports.app = app;
 const environment = process_1.env.ENVIRONMENT === "dev";

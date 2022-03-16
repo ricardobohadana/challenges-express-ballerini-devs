@@ -33,7 +33,7 @@ const express_1 = __importStar(require("express"));
 const process_1 = require("process");
 const logEvents_1 = __importDefault(require("./Middlewares/logEvents"));
 const devRouter_1 = __importDefault(require("./Routers/devRouter"));
-const allowedDomains = ["https://www.challenges-express-devs.heroku.com"];
+// const allowedDomains = ["https://www.challenges-express-devs.heroku.com"];
 const app = (0, express_1.default)();
 exports.app = app;
 const environment = process_1.env.ENVIRONMENT === "dev";
@@ -42,20 +42,7 @@ if (environment) {
     app.use((0, cors_1.default)());
 }
 else {
-    app.use((0, cors_1.default)({
-        origin: (origin, callback) => {
-            if (origin === undefined) {
-                callback(new Error("Not allowed origin by CORS"));
-            }
-            else if (allowedDomains.indexOf(origin) !== -1) {
-                callback(null, true);
-            }
-            else {
-                callback(new Error("Not allowed origin by CORS"));
-            }
-        },
-        optionsSuccessStatus: 200,
-    }));
+    app.use((0, cors_1.default)());
 }
 app.use((0, express_1.json)());
 app.use(logEvents_1.default);

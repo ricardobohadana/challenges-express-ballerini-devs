@@ -5,7 +5,7 @@ import { env } from "process";
 import logEvents from "./Middlewares/logEvents";
 import devRouter from "./Routers/devRouter";
 
-const allowedDomains = ["http://localhost:3000", undefined];
+const allowedDomains = ["https://www.challenges-express-devs.heroku.com"];
 
 const app = express();
 const environment = env.ENVIRONMENT === "dev";
